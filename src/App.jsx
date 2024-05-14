@@ -17,12 +17,12 @@ const HallSeats = () => {
   };
 
   return (
-    <div className="bg-gray-900 text-white min-h-screen">
+    <div className="bg-white text-purple-600 min-h-screen">
       <header className="bg-gradient-to-r from-green-700 to-green-900 py-2 flex justify-center">
         <img src="/Nan.jpg" alt="Banner" className="w-2/5 object-cover object-center" />
       </header>
       <div className="container mx-auto py-8">
-        <h2 className="text-4xl font-bold mb-4 text-center">
+        <h2 className="text-5xl font-bold mb-4 text-center">
           Available Seats in the Room
         </h2>
         <p className="number-style text-8xl mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
