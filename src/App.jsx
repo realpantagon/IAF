@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 
 const HallSeats = () => {
-  const [availableSeats, setAvailableSeats] = useState(100);
+  const [availableSeats, setAvailableSeats] = useState(400);
 
   const handleDoorScanIn = () => {
     if (availableSeats > 0) {
@@ -11,25 +11,21 @@ const HallSeats = () => {
   };
 
   const handleDoorScanOut = () => {
-    if (availableSeats < 100) {
+    if (availableSeats < 400) {
       setAvailableSeats(availableSeats + 1);
     }
   };
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      <header className="bg-gradient-to-r from-purple-600 to-pink-600 py-8">
-        <img
-          src="path/to/your/banner-image.jpg"
-          alt="Banner"
-          className="w-full h-48 object-cover object-center"
-        />
+      <header className="bg-gradient-to-r from-green-700 to-green-900 py-2 flex justify-center">
+        <img src="/Nan.jpg" alt="Banner" className="w-2/5 object-cover object-center" />
       </header>
       <div className="container mx-auto py-8">
         <h2 className="text-4xl font-bold mb-4 text-center">
-          Available Seats in the Hall
+          Available Seats in the Room
         </h2>
-        <p className="number-style mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+        <p className="number-style text-8xl mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
           {availableSeats}
         </p>
         <div className="flex justify-center space-x-4">
