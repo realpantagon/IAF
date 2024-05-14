@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const App = () => {
+const Scanin = () => {
   const [inputValue, setInputValue] = useState("");
   const [attendee, setAttendee] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -117,11 +117,15 @@ const App = () => {
             <p className="text-lg text-gray-800">
               Email: {attendee.fields.email}
             </p>
+            <p className="text-lg text-gray-800">
+              {roomName}
+            </p>
           </div>
         )}
+        
       </div>
     </div>
   );
 };
 
-export default App;
+export default Scanin;
