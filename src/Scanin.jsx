@@ -1,5 +1,4 @@
-// Scanin.jsx
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { GlobalStateContext } from "./GlobalStateIn";
 
@@ -7,27 +6,12 @@ const Scanin = () => {
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [roomName, setRoomName] = useState("");
-  
 
   const { updateAttendeeData, decreaseAvailableSeats } = useContext(GlobalStateContext);
-
-  useEffect(() => {
-    const storedRoomName = localStorage.getItem("roomName");
-    if (storedRoomName) {
-      setRoomName(storedRoomName);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("roomName", roomName);
-  }, [roomName]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
-
-  
 
   const handleKeyPress = async (e) => {
     if (e.key === 'Enter') {
@@ -52,7 +36,6 @@ const Scanin = () => {
               name: attendee.fields.Name,
               refId: attendee.fields['REF ID'],
               email: attendee.fields.email,
-              roomName,
             });
             decreaseAvailableSeats(); // Decrease available seats count
           } else {
@@ -68,37 +51,12 @@ const Scanin = () => {
     }
   };
 
-  const handleRoomChange = (e) => {
-    setRoomName(e.target.value);
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-r from-green-500 to-green-700 flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
         <h1 className="text-5xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-800">
           Scan In ID
         </h1>
-        <div className="mb-6">
-          <label
-            htmlFor="roomSelect"
-            className="block text-xl font-semibold text-green-700"
-          >
-            Select Room:
-          </label>
-          <select
-            id="roomSelect"
-            value={roomName}
-            onChange={handleRoomChange}
-            className="mt-2 block w-full py-3 px-4 border-2 border-green-500 bg-white rounded-md shadow-md focus:outline-none focus:ring-4 focus:ring-green-300 focus:border-transparent text-xl text-gray-800"
-          >
-            <option value="" disabled>
-              {roomName ? `Selected: ${roomName}` : "Choose a room"}
-            </option>
-            <option value="Room 1">Room 1</option>
-            <option value="Room 2">Room 2</option>
-            <option value="Room 3">Room 3</option>
-          </select>
-        </div>
         <input
           type="text"
           value={inputValue}

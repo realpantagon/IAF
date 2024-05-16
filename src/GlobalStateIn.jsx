@@ -1,4 +1,3 @@
-// GlobalStateContext.js
 import React, { createContext, useState, useEffect } from 'react';
 
 export const GlobalStateContext = createContext();
@@ -8,9 +7,12 @@ export const GlobalStateProvider = ({ children }) => {
     name: '',
     refId: '',
     email: '',
-    roomName: '',
   });
-  const [availableSeats, setAvailableSeats] = useState(400);
+
+  const [availableSeats, setAvailableSeats] = useState(() => {
+    const storedSeats = localStorage.getItem('availableSeats');
+    return storedSeats ? parseInt(storedSeats) : 400;
+  });
 
   const broadcastChannel = new BroadcastChannel('global_state_channel');
 
@@ -20,8 +22,10 @@ export const GlobalStateProvider = ({ children }) => {
         setAttendeeData(event.data.payload);
       } else if (event.data.type === 'UPDATE_AVAILABLE_SEATS') {
         setAvailableSeats(event.data.payload);
+        localStorage.setItem('availableSeats', event.data.payload.toString());
       }
     };
+
     return () => {
       broadcastChannel.close();
     };
@@ -30,19 +34,46 @@ export const GlobalStateProvider = ({ children }) => {
   const updateAttendeeData = (newData) => {
     const updatedData = { ...attendeeData, ...newData };
     setAttendeeData(updatedData);
-    broadcastChannel.postMessage({ type: 'UPDATE_ATTENDEE_DATA', payload: updatedData });
+    broadcastChannel.postMessage({
+      type: 'UPDATE_ATTENDEE_DATA',
+      payload: updatedData,
+    });
   };
 
   const decreaseAvailableSeats = () => {
     if (availableSeats > 0) {
       const updatedSeats = availableSeats - 1;
       setAvailableSeats(updatedSeats);
-      broadcastChannel.postMessage({ type: 'UPDATE_AVAILABLE_SEATS', payload: updatedSeats });
+      localStorage.setItem('availableSeats', updatedSeats.toString());
+      broadcastChannel.postMessage({
+        type: 'UPDATE_AVAILABLE_SEATS',
+        payload: updatedSeats,
+      });
+    }
+  };
+
+  const increaseAvailableSeats = () => {
+    if (availableSeats < 400) {
+      const updatedSeats = availableSeats + 1;
+      setAvailableSeats(updatedSeats);
+      localStorage.setItem('availableSeats', updatedSeats.toString());
+      broadcastChannel.postMessage({
+        type: 'UPDATE_AVAILABLE_SEATS',
+        payload: updatedSeats,
+      });
     }
   };
 
   return (
-    <GlobalStateContext.Provider value={{ attendeeData, updateAttendeeData, availableSeats, decreaseAvailableSeats }}>
+    <GlobalStateContext.Provider
+      value={{
+        attendeeData,
+        updateAttendeeData,
+        availableSeats,
+        decreaseAvailableSeats,
+        increaseAvailableSeats,
+      }}
+    >
       {children}
     </GlobalStateContext.Provider>
   );
