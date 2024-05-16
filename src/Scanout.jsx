@@ -79,7 +79,7 @@ const Scanout = () => {
     <div className="min-h-screen bg-gradient-to-r from-green-500 to-green-700 flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
         <h1 className="text-5xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-800">
-          Scan Out ID
+          Scan Out MAIN
         </h1>
         <input
           type="text"
