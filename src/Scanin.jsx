@@ -69,15 +69,15 @@ const Scanin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-        <h1 className="text-4xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
-          Scan In ID{" "}
+    <div className="min-h-screen bg-gradient-to-r from-green-500 to-green-700 flex items-center justify-center">
+      <div className="bg-white p-8 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
+        <h1 className="text-5xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-800">
+          Scan In ID
         </h1>
-        <div className="mb-4">
+        <div className="mb-6">
           <label
             htmlFor="roomSelect"
-            className="block text-lg font-semibold text-purple-600"
+            className="block text-xl font-semibold text-green-700"
           >
             Select Room:
           </label>
@@ -85,7 +85,7 @@ const Scanin = () => {
             id="roomSelect"
             value={roomName}
             onChange={handleRoomChange}
-            className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+            className="mt-2 block w-full py-3 px-4 border-2 border-green-500 bg-white rounded-md shadow-md focus:outline-none focus:ring-4 focus:ring-green-300 focus:border-transparent text-xl text-gray-800"
           >
             <option value="" disabled>
               {roomName ? `Selected: ${roomName}` : "Choose a room"}
@@ -101,13 +101,15 @@ const Scanin = () => {
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
           placeholder="Enter REF ID"
-          className="w-full px-4 py-2 rounded-lg border-2 border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent text-lg text-gray-800 placeholder-gray-400"
+          className="w-full px-6 py-4 rounded-lg border-4 border-green-500 focus:outline-none focus:ring-4 focus:ring-green-300 focus:border-transparent text-2xl text-gray-800 placeholder-gray-400"
         />
         {loading && (
-          <p className="mt-4 text-lg text-center text-purple-600">Loading...</p>
+          <p className="mt-6 text-2xl text-center text-green-600 animate-pulse">
+            Loading...
+          </p>
         )}
         {error && (
-          <p className="mt-4 text-lg text-center text-red-500">{error}</p>
+          <p className="mt-6 text-2xl text-center text-red-500">{error}</p>
         )}
       </div>
     </div>
