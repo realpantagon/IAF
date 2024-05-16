@@ -60,22 +60,22 @@ const Dashboard = () => {
           className="w-full object-cover object-center border-4 border-white shadow-lg"
         />
       </header>
-      <div className="container mx-auto py-8">
+      <div className="container mx-auto py-8 relative">
         <h1 className="text-6xl font-bold mb-8 text-center text-white drop-shadow-lg">
           {roomName}
         </h1>
         <p className="number-style text-9xl mb-12 text-center text-transparent bg-clip-text bg-white drop-shadow-lg">
           {availableSeats}
         </p>
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-8" id="button-container">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
+            className="scan-button scan-in opacity-0 transition-opacity duration-300 hover:opacity-100"
             onClick={handleScanInClick}
           >
             Scan In
           </button>
           <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            className="scan-button scan-out opacity-0 transition-opacity duration-300 hover:opacity-100"
             onClick={handleScanOutClick}
           >
             Scan Out
