@@ -1,9 +1,9 @@
-// HallSeats.jsx
+// Dashboard.jsx
 import React, { useState, useContext } from 'react';
 import './App.css';
 import { GlobalStateContext } from './GlobalState';
 
-const HallSeats = () => {
+const Dashboard = () => {
   const [availableSeats, setAvailableSeats] = useState(400);
   const { attendeeData } = useContext(GlobalStateContext);
 
@@ -28,7 +28,7 @@ const HallSeats = () => {
         <h1 className="text-6xl font-bold mb-8 text-center text-white drop-shadow-lg">
           Available Seats
         </h1>
-        <p className="number-style text-9xl mb-12 text-center text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-white drop-shadow-lg">
+        <p className="number-style text-9xl mb-12 text-center text-transparent bg-clip-text bg-gradient-to-r from-red-800 to-amber-300 drop-shadow-lg">
           {availableSeats}
         </p>
         {attendeeData.name && (
@@ -57,4 +57,4 @@ const HallSeats = () => {
   );
 };
 
-export default HallSeats;
+export default Dashboard;
