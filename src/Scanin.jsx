@@ -1,13 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { GlobalStateContext } from "./GlobalStateIn";
 
 const Scanin = () => {
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const { updateAttendeeData, decreaseAvailableSeats } = useContext(GlobalStateContext);
+  const [attendeeData, setAttendeeData] = useState(null);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -19,25 +17,54 @@ const Scanin = () => {
       if (refId !== '') {
         setLoading(true);
         setError(null);
+        setAttendeeData(null);
+
         try {
           const response = await axios.get(
             `https://api.airtable.com/v0/appo4h23QGedx6uR0/Attendee?filterByFormula=({REF ID} = '${refId}')`,
             {
               headers: {
-                Authorization:
-                  'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
+                Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
               },
             }
           );
           console.log('Response data:', response.data);
+
           if (response.data.records.length > 0) {
             const attendee = response.data.records[0];
-            updateAttendeeData({
-              name: attendee.fields.Name,
-              refId: attendee.fields['REF ID'],
-              email: attendee.fields.email,
-            });
-            decreaseAvailableSeats(); // Decrease available seats count
+            setAttendeeData(attendee.fields);
+
+            // Decrease available seats in the "ROOM count" table for the "MAIN" room
+            const roomResponse = await axios.get(
+              'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count?filterByFormula=({Room Name} = "MAIN")',
+              {
+                headers: {
+                  Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
+                },
+              }
+            );
+
+            if (roomResponse.data.records.length > 0) {
+              const room = roomResponse.data.records[0];
+              const availableSeats = room.fields['Available Seat'];
+
+              if (availableSeats > 0) {
+                await axios.patch(
+                  `https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count/${room.id}`,
+                  {
+                    fields: {
+                      'Available Seat': availableSeats - 1,
+                    },
+                  },
+                  {
+                    headers: {
+                      Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
+                      'Content-Type': 'application/json',
+                    },
+                  }
+                );
+              }
+            }
           } else {
             setError('No attendee found with the provided REF ID.');
           }
@@ -45,6 +72,7 @@ const Scanin = () => {
           console.error('Error fetching attendee data:', error);
           setError('An error occurred while fetching the attendee data.');
         }
+
         setLoading(false);
         setInputValue('');
       }
@@ -72,6 +100,19 @@ const Scanin = () => {
         )}
         {error && (
           <p className="mt-6 text-2xl text-center text-red-500">{error}</p>
+        )}
+        {attendeeData && (
+          <div className="mt-6 text-2xl text-center text-gray-800">
+            <p>
+              <strong>Name:</strong> {attendeeData.Name}
+            </p>
+            <p>
+              <strong>REF ID:</strong> {attendeeData['REF ID']}
+            </p>
+            <p>
+              <strong>Email:</strong> {attendeeData.email}
+            </p>
+          </div>
         )}
       </div>
     </div>

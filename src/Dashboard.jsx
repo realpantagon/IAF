@@ -1,11 +1,47 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './App.css';
-import { GlobalStateContext } from './GlobalStateIn';
 
 const Dashboard = () => {
-  const { attendeeData, availableSeats } = useContext(GlobalStateContext);
   const navigate = useNavigate();
+  const [availableSeats, setAvailableSeats] = useState(0);
+  const [maxSeats, setMaxSeats] = useState(0);
+  const [roomName, setRoomName] = useState('');
+
+  useEffect(() => {
+    const fetchSeats = async () => {
+      try {
+        const response = await axios.get(
+          'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count',
+          {
+            headers: {
+              Authorization: 'Bearer pat9aDF4Eh2hSEl8g.442a2a6963b0964593b0e1f8f0469049b275073158fc366e1187ff184f1beb7c',
+            },
+          }
+        );
+        const records = response.data.records;
+        const selectedRoom = records.find((record) => record.fields['Room Name'] === 'MAIN');
+        console.log(selectedRoom);
+
+        if (selectedRoom) {
+          setAvailableSeats(selectedRoom.fields['Available Seat']);
+          setMaxSeats(selectedRoom.fields['Max Seat']);
+          setRoomName(selectedRoom.fields['Room Name']);
+        }
+      } catch (error) {
+        console.error('Error fetching data from Airtable:', error);
+      }
+    };
+
+    fetchSeats(); // Initial fetch
+
+    const interval = setInterval(fetchSeats, 1000); // Fetch every second
+
+    return () => {
+      clearInterval(interval); // Clean up the interval on component unmount
+    };
+  }, []);
 
   const handleScanInClick = () => {
     navigate('/scanin');
@@ -18,24 +54,19 @@ const Dashboard = () => {
   return (
     <div className="bg-gradient-to-r from-green-500 to-green-900 min-h-screen">
       <header className="pb-4 flex justify-center">
-        <img src="/nannnnnn.jpg" alt="Banner" className="w-full object-cover object-center border-4 border-white shadow-lg" />
+        <img
+          src="/nannnnnn.jpg"
+          alt="Banner"
+          className="w-full object-cover object-center border-4 border-white shadow-lg"
+        />
       </header>
       <div className="container mx-auto py-8">
         <h1 className="text-6xl font-bold mb-8 text-center text-white drop-shadow-lg">
-          Available Seats
+          {roomName}
         </h1>
         <p className="number-style text-9xl mb-12 text-center text-transparent bg-clip-text bg-white drop-shadow-lg">
           {availableSeats}
         </p>
-        {attendeeData.name && (
-          <div className="text-center">
-            <div className="p-6 rounded-lg shadow-lg">
-              <p className="text-3xl text-white mb-2 font-semibold">Name: {attendeeData.name}</p>
-              <p className="text-3xl text-white mb-2 font-semibold">REF ID: {attendeeData.refId}</p>
-              <p className="text-3xl text-white mb-2 font-semibold">Email: {attendeeData.email}</p>
-            </div>
-          </div>
-        )}
         <div className="flex justify-center mt-8">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
