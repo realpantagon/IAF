@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom"
-import HallSeats from "./Hallseats"
 import Scanin from "./Scanin"
 import Scanout from "./Scanout"
+import HallSeats from "./Hallseats"
 
 function App() {
   return (
