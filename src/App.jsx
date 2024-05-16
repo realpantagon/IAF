@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom"
-import HallSeats from "./HallSeats"
+import HallSeats from "./Hallseats"
 import Scanin from "./Scanin"
 import Scanout from "./Scanout"
 
