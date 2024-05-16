@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const Scanin = () => {
+const Scanin2 = () => {
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -36,7 +36,7 @@ const Scanin = () => {
 
             // Decrease available seats in the "ROOM count" table for the "MAIN" room
             const roomResponse = await axios.get(
-              'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count?filterByFormula=({Room Name} = "MAIN")',
+              'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count?filterByFormula=({Room Name} = "PITCHING")',
               {
                 headers: {
                   Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
@@ -83,7 +83,7 @@ const Scanin = () => {
     <div className="min-h-screen bg-gradient-to-r from-green-500 to-green-700 flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
         <h1 className="text-5xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-800">
-          Scan In MAIN
+          Scan In PITCHER
         </h1>
         <input
           type="text"
@@ -119,4 +119,4 @@ const Scanin = () => {
   );
 };
 
-export default Scanin;
+export default Scanin2;

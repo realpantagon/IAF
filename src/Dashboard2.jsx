@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 
-const Dashboard = () => {
+const Dashboard2 = () => {
   const navigate = useNavigate();
   const [availableSeats, setAvailableSeats] = useState(0);
   const [maxSeats, setMaxSeats] = useState(0);
@@ -21,7 +21,7 @@ const Dashboard = () => {
           }
         );
         const records = response.data.records;
-        const selectedRoom = records.find((record) => record.fields['Room Name'] === 'MAIN');
+        const selectedRoom = records.find((record) => record.fields['Room Name'] === 'PITCHING');
         console.log(selectedRoom);
 
         if (selectedRoom) {
@@ -44,17 +44,17 @@ const Dashboard = () => {
   }, []);
 
   const handleScanInClick = () => {
-    navigate('/scanin');
+    navigate('/scanin2');
   };
 
   const handleScanOutClick = () => {
-    navigate('/scanout');
+    navigate('/scanout2');
   };
 
   return (
     <div className="bg-gradient-to-r from-green-500 to-green-900 min-h-screen">
       <header className="pb-4 flex justify-center">
-        <a href="/2"> 
+        <a href="/"> 
           <img
             src="/nannnnnn.jpg"
             alt="Banner"
@@ -88,4 +88,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Dashboard2;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const Scanin = () => {
+const Scanout2 = () => {
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -28,15 +28,14 @@ const Scanin = () => {
               },
             }
           );
-          console.log('Response data:', response.data);
 
           if (response.data.records.length > 0) {
             const attendee = response.data.records[0];
             setAttendeeData(attendee.fields);
 
-            // Decrease available seats in the "ROOM count" table for the "MAIN" room
+            // Increase available seats in the "ROOM count" table for the "MAIN" room
             const roomResponse = await axios.get(
-              'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count?filterByFormula=({Room Name} = "MAIN")',
+              'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count?filterByFormula=({Room Name} = "PITCHING")',
               {
                 headers: {
                   Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
@@ -47,23 +46,20 @@ const Scanin = () => {
             if (roomResponse.data.records.length > 0) {
               const room = roomResponse.data.records[0];
               const availableSeats = room.fields['Available Seat'];
-
-              if (availableSeats > 0) {
-                await axios.patch(
-                  `https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count/${room.id}`,
-                  {
-                    fields: {
-                      'Available Seat': availableSeats - 1,
-                    },
+              await axios.patch(
+                `https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count/${room.id}`,
+                {
+                  fields: {
+                    'Available Seat': availableSeats + 1,
                   },
-                  {
-                    headers: {
-                      Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
-                      'Content-Type': 'application/json',
-                    },
-                  }
-                );
-              }
+                },
+                {
+                  headers: {
+                    Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
+                    'Content-Type': 'application/json',
+                  },
+                }
+              );
             }
           } else {
             setError('No attendee found with the provided REF ID.');
@@ -83,7 +79,7 @@ const Scanin = () => {
     <div className="min-h-screen bg-gradient-to-r from-green-500 to-green-700 flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
         <h1 className="text-5xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-800">
-          Scan In MAIN
+          Scan Out PITCHER
         </h1>
         <input
           type="text"
@@ -119,4 +115,4 @@ const Scanin = () => {
   );
 };
 
-export default Scanin;
+export default Scanout2;
