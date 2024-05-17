@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Scanout = () => {
   const [inputValue, setInputValue] = useState("");
@@ -76,7 +77,7 @@ const Scanout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-green-500 to-green-700 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-r from-green-500 to-green-700 flex flex-col items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
         <h1 className="text-5xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-800">
           Scan Out MAIN
@@ -110,6 +111,14 @@ const Scanout = () => {
             </p>
           </div>
         )}
+      </div>
+      <div className="mt-8">
+        <Link
+          to="/"
+          className="px-6 py-3 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+        >
+          Back to Dashboard
+        </Link>
       </div>
     </div>
   );
