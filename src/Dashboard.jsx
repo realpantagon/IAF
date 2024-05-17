@@ -53,7 +53,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-green-500 to-green-900 min-h-screen">
+    <div className="bg-stone-200 min-h-screen">
       <header className="pb-4 flex justify-center">
       <Link to="/2">
           <img
@@ -64,21 +64,25 @@ const Dashboard = () => {
         </Link>
       </header>
       <div className="container mx-auto py-8 relative">
-        <h1 className="text-6xl font-bold mb-8 text-center text-white drop-shadow-lg">
+        <h1 className="text-6xl font-bold mb-8 text-center text-green-900 drop-shadow-lg">
           {roomName} ROOM
         </h1>
-        <p className="number-style text-9xl mb-12 text-center text-transparent bg-clip-text bg-white drop-shadow-lg">
+        
+        <p className="number-style text-9xl mb-12 text-center text-transparent bg-clip-text text-green-900 drop-shadow-lg">
           {availableSeats}
         </p>
+        <h1 className="text-5xl font-bold mb-8 text-center text-green-900 drop-shadow-lg">
+          Available Seats
+        </h1>
         <div className="flex justify-center mt-8" id="button-container">
           <button
-            className="scan-button scan-in opacity-0 transition-opacity duration-300 hover:opacity-100"
+            className="scan-button scan-in opacity-0 transition-opacity duration-300 hover:opacity-100 hover:text-2xl"
             onClick={handleScanInClick}
           >
             Scan In
           </button>
           <button
-            className="scan-button scan-out opacity-0 transition-opacity duration-300 hover:opacity-100"
+            className="scan-button scan-out opacity-0 transition-opacity duration-300 hover:opacity-100 hover:text-2xl"
             onClick={handleScanOutClick}
           >
             Scan Out

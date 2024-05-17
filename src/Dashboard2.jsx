@@ -52,7 +52,7 @@ const Dashboard2 = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-green-500 to-green-900 min-h-screen">
+    <div className="bg-green-500 min-h-screen">
       <header className="pb-4 flex justify-center">
         <a href="/"> 
           <img
@@ -63,10 +63,10 @@ const Dashboard2 = () => {
         </a>
       </header>
       <div className="container mx-auto py-8 relative">
-        <h1 className="text-6xl font-bold mb-8 text-center text-white drop-shadow-lg">
+        <h1 className="text-6xl font-bold mb-8 text-center text-green-800">
           {roomName} ROOM
         </h1>
-        <p className="number-style text-9xl mb-12 text-center text-transparent bg-clip-text bg-white drop-shadow-lg">
+        <p className="number-style text-9xl mb-12 text-center text-transparent bg-clip-text bg-green-800">
           {availableSeats}
         </p>
         <div className="flex justify-center mt-8" id="button-container">
