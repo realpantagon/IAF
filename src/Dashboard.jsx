@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -54,13 +55,13 @@ const Dashboard = () => {
   return (
     <div className="bg-gradient-to-r from-green-500 to-green-900 min-h-screen">
       <header className="pb-4 flex justify-center">
-        <a href="/2"> 
+      <Link to="/2">
           <img
             src="/nannnnnn.jpg"
             alt="Banner"
-            className="w-full object-cover object-center border-4 border-white shadow-lg cursor-pointer" // Added cursor-pointer to indicate clickable
+            className="w-full object-cover object-center border-4 border-white shadow-lg cursor-pointer"
           />
-        </a>
+        </Link>
       </header>
       <div className="container mx-auto py-8 relative">
         <h1 className="text-6xl font-bold mb-8 text-center text-white drop-shadow-lg">
