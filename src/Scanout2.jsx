@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-
 const Scanout2 = () => {
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -11,6 +10,33 @@ const Scanout2 = () => {
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
+  };
+
+  const sendDataToPitchingRoomStatus = async (refId, status) => {
+    try {
+      const response = await axios.post(
+        'https://api.airtable.com/v0/appo4h23QGedx6uR0/PitchingRoomstatus',
+        {
+          records: [
+            {
+              fields: {
+                ID: refId,
+                Status: status,
+              },
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log('Data sent to PitchingRoomstatus:', response.data);
+    } catch (error) {
+      console.error('Error sending data to PitchingRoomstatus:', error);
+    }
   };
 
   const handleKeyPress = async (e) => {
@@ -35,7 +61,7 @@ const Scanout2 = () => {
             const attendee = response.data.records[0];
             setAttendeeData(attendee.fields);
 
-            // Increase available seats in the "ROOM count" table for the "MAIN" room
+            // Increase available seats in the "ROOM count" table for the "PITCHING" room
             const roomResponse = await axios.get(
               'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count?filterByFormula=({Room Name} = "PITCHING")',
               {
@@ -63,6 +89,9 @@ const Scanout2 = () => {
                 }
               );
             }
+
+
+            await sendDataToPitchingRoomStatus(refId, 'ScanOut');
           } else {
             setError('No attendee found with the provided REF ID.');
           }
@@ -81,7 +110,7 @@ const Scanout2 = () => {
     <div className="min-h-screen bg-gradient-to-r from-green-500 to-green-700 flex flex-col items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
         <h1 className="text-5xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-800">
-          Scan Out PITCHER
+          Scan Out PITCHING
         </h1>
         <input
           type="text"

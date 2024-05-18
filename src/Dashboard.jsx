@@ -35,12 +35,12 @@ const Dashboard = () => {
       }
     };
 
-    fetchSeats(); // Initial fetch
+    fetchSeats(); 
 
-    const interval = setInterval(fetchSeats, 1000); // Fetch every second
+    const interval = setInterval(fetchSeats, 1000); 
 
     return () => {
-      clearInterval(interval); // Clean up the interval on component unmount
+      clearInterval(interval); 
     };
   }, []);
 

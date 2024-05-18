@@ -12,6 +12,33 @@ const Scanin2 = () => {
     setInputValue(e.target.value);
   };
 
+  const sendDataToPitcherRoomStatus = async (refId, status) => {
+    try {
+      const response = await axios.post(
+        'https://api.airtable.com/v0/appo4h23QGedx6uR0/PitcherRoomstatus',
+        {
+          records: [
+            {
+              fields: {
+                ID: refId,
+                Status: status,
+              },
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log('Data sent to PitcherRoomstatus:', response.data);
+    } catch (error) {
+      console.error('Error sending data to PitcherRoomstatus:', error);
+    }
+  };
+
   const handleKeyPress = async (e) => {
     if (e.key === 'Enter') {
       const refId = inputValue.trim();
@@ -35,7 +62,7 @@ const Scanin2 = () => {
             const attendee = response.data.records[0];
             setAttendeeData(attendee.fields);
 
-            // Decrease available seats in the "ROOM count" table for the "MAIN" room
+            // Decrease available seats in the "ROOM count" table for the "PITCHING" room
             const roomResponse = await axios.get(
               'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count?filterByFormula=({Room Name} = "PITCHING")',
               {
@@ -66,6 +93,9 @@ const Scanin2 = () => {
                 );
               }
             }
+
+            // Send data to PitcherRoomstatus table
+            await sendDataToPitcherRoomStatus(refId, 'ScanIn');
           } else {
             setError('No attendee found with the provided REF ID.');
           }
@@ -96,7 +126,8 @@ const Scanin2 = () => {
         />
         {loading && (
           <p className="mt-6 text-2xl text-center text-green-600 animate-pulse">
-            Loading...          </p>
+            Loading...
+          </p>
         )}
         {error && (
           <p className="mt-6 text-2xl text-center text-red-500">{error}</p>
@@ -104,11 +135,13 @@ const Scanin2 = () => {
         {attendeeData && (
           <div className="mt-6 text-2xl text-center text-gray-800">
             <p>
-              <strong>Name:</strong> {attendeeData.Name}            </p>
+              <strong>Name:</strong> {attendeeData.Name}
+            </p>
             <p>
               <strong>REF ID:</strong> {attendeeData['REF ID']}
             </p>
-            <p>              <strong>Email:</strong> {attendeeData.email}
+            <p>
+              <strong>Email:</strong> {attendeeData.email}
             </p>
           </div>
         )}
@@ -118,7 +151,8 @@ const Scanin2 = () => {
           to="/2"
           className="px-6 py-3 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
         >
-          Back to Dashboard        </Link>
+          Back to Dashboard
+        </Link>
       </div>
     </div>
   );
