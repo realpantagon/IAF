@@ -12,8 +12,9 @@ const Scanin = () => {
     setInputValue(e.target.value);
   };
 
-  const sendDataToMainRoomStatus = async (refId, status) => {
+  const sendDataToMainRoomStatus = async (refId, status) => { 
     try {
+      const timestamp = new Date().toISOString();
       const response = await axios.post(
         'https://api.airtable.com/v0/appo4h23QGedx6uR0/MainRoomStatus',
         {
@@ -22,6 +23,7 @@ const Scanin = () => {
               fields: {
                 ID: refId,
                 Status: status,
+                Timestamp: timestamp,
               },
             },
           ],
