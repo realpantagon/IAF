@@ -74,7 +74,10 @@ const Scanout2 = () => {
             if (roomResponse.data.records.length > 0) {
               const room = roomResponse.data.records[0];
               const availableSeats = room.fields['Available Seat'];
-              await axios.patch(
+              const maxSeats = room.fields['Max Seat'];
+
+              if (availableSeats < maxSeats) {
+                await axios.patch(
                 `https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count/${room.id}`,
                 {
                   fields: {
@@ -88,8 +91,10 @@ const Scanout2 = () => {
                   },
                 }
               );
+            } else if (availableSeats === maxSeats) {
+              setError('The room is already at maximum capacity.');
             }
-
+          }
 
             await sendDataToPitchingRoomStatus(refId, 'ScanOut');
           } else {

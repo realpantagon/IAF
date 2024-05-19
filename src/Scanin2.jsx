@@ -75,8 +75,9 @@ const Scanin2 = () => {
             if (roomResponse.data.records.length > 0) {
               const room = roomResponse.data.records[0];
               const availableSeats = room.fields['Available Seat'];
+              const maxSeats = room.fields['Max Seat'];
 
-              if (availableSeats > 0) {
+              if (availableSeats > 0 && availableSeats <= maxSeats) {
                 await axios.patch(
                   `https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count/${room.id}`,
                   {
@@ -91,6 +92,8 @@ const Scanin2 = () => {
                     },
                   }
                 );
+              } else if (availableSeats <= 0) {
+                setError('No available seats in the room.');
               }
             }
 
