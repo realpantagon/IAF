@@ -70,24 +70,30 @@ const Scanout = () => {
                 },
               }
             );
-
+  
             if (roomResponse.data.records.length > 0) {
               const room = roomResponse.data.records[0];
               const availableSeats = room.fields['Available Seat'];
-              await axios.patch(
-                `https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count/${room.id}`,
-                {
-                  fields: {
-                    'Available Seat': availableSeats + 1,
+              const maxSeats = room.fields['Max Seat'];
+  
+              if (availableSeats < maxSeats) {
+                await axios.patch(
+                  `https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count/${room.id}`,
+                  {
+                    fields: {
+                      'Available Seat': availableSeats + 1,
+                    },
                   },
-                },
-                {
-                  headers: {
-                    Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
-                    'Content-Type': 'application/json',
-                  },
-                }
-              );
+                  {
+                    headers: {
+                      Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
+                      'Content-Type': 'application/json',
+                    },
+                  }
+                );
+              } else if (availableSeats === maxSeats) {
+                setError('The room is already at maximum capacity.');
+              }
             }
 
             // Send data to MainRoomStatus table
