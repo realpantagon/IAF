@@ -12,10 +12,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="Pitching" element={<Dashboard2 />} />
-        <Route path="ScaninMain" element={<Scanin />} />
-        <Route path="ScanoutMain" element={<Scanout />} />
-        <Route path="ScaninPitching" element={<Scanin2 />} />
-        <Route path="ScanoutPitching" element={<Scanout2 />} />
+        <Route path="Scaninmain" element={<Scanin />} />
+        <Route path="Scanoutmain" element={<Scanout />} />
+        <Route path="Scaninpitch" element={<Scanin2 />} />
+        <Route path="Scanoutpitch" element={<Scanout2 />} />
       </Routes>
     </div>
   );

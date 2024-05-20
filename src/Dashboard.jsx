@@ -47,11 +47,11 @@ const Dashboard = () => {
   }, []);
 
   const handleScanInClick = () => {
-    navigate('/scanin');
+    navigate('/scaninmain');
   };
 
   const handleScanOutClick = () => {
-    navigate('/scanout');
+    navigate('/scanoutmain');
   };
 
   return (

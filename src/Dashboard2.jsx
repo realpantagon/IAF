@@ -45,11 +45,11 @@ const Dashboard2 = () => {
   }, []);
 
   const handleScanInClick = () => {
-    navigate('/scanin2');
+    navigate('/scaninpitch');
   };
 
   const handleScanOutClick = () => {
-    navigate('/scanout2');
+    navigate('/scanoutpitch');
   };
 
   return (
