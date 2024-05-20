@@ -58,9 +58,11 @@ const Dashboard2 = () => {
         <h1 className="text-7xl font-extrabold mb-8 mt-72 text-center animate-text bg-gradient-to-r from-red-700 to-amber-400 bg-clip-text text-transparent drop-shadow-lg">
           {roomName} ROOM
         </h1>
+        <a href='/'>
         <p className="number-style text-9xl mb-12 text-center text-transparent bg-clip-text bg-green-800">
           {availableSeats}
         </p>
+        </a>
         <h1 className="text-6xl font-bold mb-8 text-center text-green-900 drop-shadow-lg">
           Available Seats
         </h1>
