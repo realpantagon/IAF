@@ -57,7 +57,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-image">
       <div className="container mx-auto py-8 relative">
-        <h1 className="text-6xl font-bold mb-8 mt-80 text-center text-green-900 drop-shadow-lg">
+        <h1 className="text-7xl font-bold mb-8 mt-72 text-center text-green-900 drop-shadow-lg">
           {roomName} ROOM
         </h1>
         

@@ -11,11 +11,11 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        <Route path="2" element={<Dashboard2 />} />
-        <Route path="Scanin" element={<Scanin />} />
-        <Route path="Scanout" element={<Scanout />} />
-        <Route path="Scanin2" element={<Scanin2 />} />
-        <Route path="Scanout2" element={<Scanout2 />} />
+        <Route path="Pitching" element={<Dashboard2 />} />
+        <Route path="ScaninMain" element={<Scanin />} />
+        <Route path="ScanoutMain" element={<Scanout />} />
+        <Route path="ScaninPitching" element={<Scanin2 />} />
+        <Route path="ScanoutPitching" element={<Scanout2 />} />
       </Routes>
     </div>
   );

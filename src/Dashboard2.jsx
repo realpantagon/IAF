@@ -53,23 +53,17 @@ const Dashboard2 = () => {
   };
 
   return (
-    <div className="bg-green-500 min-h-screen">
-      <header className="pb-4 flex justify-center">
-        <a href="/"> 
-          <img
-            src="/nannnnnn.jpg"
-            alt="Banner"
-            className="w-full object-cover object-center border-4 border-white shadow-lg cursor-pointer" // Added cursor-pointer to indicate clickable
-          />
-        </a>
-      </header>
+    <div className="min-h-screen bg-image">
       <div className="container mx-auto py-8 relative">
-        <h1 className="text-6xl font-bold mb-8 text-center text-green-800">
+        <h1 className="text-7xl font-bold mb-8 mt-72 text-center animate-text bg-gradient-to-r from-red-700 to-amber-400 bg-clip-text text-transparent drop-shadow-lg">
           {roomName} ROOM
         </h1>
         <p className="number-style text-9xl mb-12 text-center text-transparent bg-clip-text bg-green-800">
           {availableSeats}
         </p>
+        <h1 className="text-6xl font-bold mb-8 text-center text-green-900 drop-shadow-lg">
+          Available Seats
+        </h1>
         <div className="flex justify-center mt-8" id="button-container">
           <button
             className="scan-button scan-in opacity-0 transition-opacity duration-300 hover:opacity-100"
