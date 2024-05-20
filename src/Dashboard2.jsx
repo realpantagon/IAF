@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
+import './Dashboard.css';
 
 const Dashboard2 = () => {
   const navigate = useNavigate();

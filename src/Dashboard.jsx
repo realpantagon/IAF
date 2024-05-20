@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import { Link } from 'react-router-dom';
+import './Dashboard.css';
+
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -53,25 +55,16 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-green-500 to-green-900 min-h-screen">
-      <header className="pb-4 flex justify-center">
-      <Link to="/2">
-          <img
-            src="/nannnnnn.jpg"
-            alt="Banner"
-            className="w-full object-cover object-center border-4 border-white shadow-lg cursor-pointer"
-          />
-        </Link>
-      </header>
+    <div className="min-h-screen bg-image">
       <div className="container mx-auto py-8 relative">
-        <h1 className="text-6xl font-bold mb-8 text-center text-white drop-shadow-lg">
+        <h1 className="text-6xl font-bold mb-8 mt-80 text-center text-green-900 drop-shadow-lg">
           {roomName} ROOM
         </h1>
         
-        <p className="number-style text-9xl mb-12 text-center text-transparent bg-clip-text bg-white drop-shadow-lg">
+        <p className="number-style text-9xl mb-12 text-center text-transparent bg-clip-text bg-green-900 drop-shadow-lg">
           {availableSeats}
         </p>
-        <h1 className="text-6xl font-bold mb-8 text-center text-white drop-shadow-lg">
+        <h1 className="text-6xl font-bold mb-8 text-center text-green-900 drop-shadow-lg">
           Available Seats
         </h1>
         <div className="flex justify-center mt-8" id="button-container">
