@@ -66,13 +66,13 @@ const Dashboard2 = () => {
         </h1>
         <div className="flex justify-center mt-8" id="button-container">
           <button
-            className="scan-button scan-in opacity-0 transition-opacity duration-300 hover:opacity-100"
+            className="scan-button scan-in opacity-0 transition-opacity duration-300 hover:opacity-100 text-6xl mr-8"
             onClick={handleScanInClick}
           >
             Scan In
           </button>
           <button
-            className="scan-button scan-out opacity-0 transition-opacity duration-300 hover:opacity-100"
+            className="scan-button scan-out opacity-0 transition-opacity duration-300 hover:opacity-100 text-6xl ml-8"
             onClick={handleScanOutClick}
           >
             Scan Out

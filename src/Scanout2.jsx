@@ -149,7 +149,7 @@ const Scanout2 = () => {
       </div>
       <div className="mt-8">
         <Link
-          to="/2"
+          to="/Pitching"
           className="px-6 py-3 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
         >
           Back to Dashboard
