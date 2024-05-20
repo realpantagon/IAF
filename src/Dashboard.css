@@ -9,3 +9,8 @@
     background-position: center;
     background-repeat: no-repeat;
   }
+
+  .number-style {
+    font-size: 450px;
+    font-weight: 800;
+  }
