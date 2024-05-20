@@ -4,7 +4,7 @@
   }
 
   .bg-image {
-    background-image: url('/public/iafbackdrop2.png');
+    background-image: url('/iafbackdrop2.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
