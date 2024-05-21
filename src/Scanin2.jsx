@@ -117,7 +117,7 @@ const Scanin2 = () => {
   return (
     <div className="min-h-screen bg-image flex flex-col items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
-        <h1 className="text-5xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-800">
+        <h1 className="text-5xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-blue-800">
           Scan In PITCHER
         </h1>
         <input
@@ -126,7 +126,7 @@ const Scanin2 = () => {
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
           placeholder="Enter REF ID"
-          className="w-full px-6 py-4 rounded-lg border-4 border-green-500 focus:outline-none focus:ring-4 focus:ring-green-300 focus:border-transparent text-2xl text-gray-800 placeholder-gray-400"
+          className="w-full px-6 py-4 rounded-lg border-4 border-sky-500 focus:outline-none focus:ring-4 focus:ring-sky-300 focus:border-transparent text-2xl text-gray-800 placeholder-gray-400"
         />
         {loading && (
           <p className="mt-6 text-2xl text-center text-green-600 animate-pulse">
