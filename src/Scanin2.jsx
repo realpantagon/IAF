@@ -13,10 +13,10 @@ const Scanin2 = () => {
     setInputValue(e.target.value);
   };
 
-  const sendDataToPitcherRoomStatus = async (refId, status) => {
+  const sendDataToPitchingRoomStatus = async (refId, status) => {
     try {
       const response = await axios.post(
-        'https://api.airtable.com/v0/appo4h23QGedx6uR0/PitcherRoomstatus',
+        'https://api.airtable.com/v0/appo4h23QGedx6uR0/PitchingRoomStatus',
         {
           records: [
             {
@@ -34,9 +34,9 @@ const Scanin2 = () => {
           },
         }
       );
-      console.log('Data sent to PitcherRoomstatus:', response.data);
+      console.log('Data sent to PitchingRoomStatus:', response.data);
     } catch (error) {
-      console.error('Error sending data to PitcherRoomstatus:', error);
+      console.error('Error sending data to PitchingRoomStatus:', error);
     }
   };
 
@@ -101,7 +101,7 @@ const Scanin2 = () => {
             }
   
             // Send data to PitcherRoomstatus table
-            await sendDataToPitcherRoomStatus(refId, 'ScanIn');
+            await sendDataToPitchingRoomStatus(refId, 'ScanIn');
           } else {
             setError('No attendee found with the provided REF ID.');
           }
@@ -119,7 +119,7 @@ const Scanin2 = () => {
     <div className="min-h-screen bg-image flex flex-col items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
         <h1 className="text-5xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-blue-800">
-          Scan In PITCHER
+          Scan In PITCHING
         </h1>
         <input
           type="text"
