@@ -50,7 +50,7 @@ const Scanin2 = () => {
         setAttendeeData(null);
   
         try {
-          const [attendeeResponse, roomResponse] = await Promise.all([
+          const [attendeeResponse, roomResponse, pitchingRoomStatusResponse] = await Promise.all([
             axios.get(
               `https://api.airtable.com/v0/appo4h23QGedx6uR0/Main%20base%E2%AD%90%EF%B8%8F?filterByFormula=({REF ID} = '${refId}')`,
               {
@@ -64,6 +64,25 @@ const Scanin2 = () => {
               {
                 headers: {
                   Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
+                },
+              }
+            ),
+            axios.post(
+              'https://api.airtable.com/v0/appo4h23QGedx6uR0/PitchingRoomStatus',
+              {
+                records: [
+                  {
+                    fields: {
+                      ID: refId,
+                      Status: 'ScanIn',
+                    },
+                  },
+                ],
+              },
+              {
+                headers: {
+                  Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
+                  'Content-Type': 'application/json',
                 },
               }
             ),
@@ -100,8 +119,7 @@ const Scanin2 = () => {
               }
             }
   
-            // Send data to PitcherRoomstatus table
-            await sendDataToPitchingRoomStatus(refId, 'ScanIn');
+            console.log('Data sent to PitchingRoomStatus:', pitchingRoomStatusResponse.data);
           } else {
             setError('No attendee found with the provided REF ID.');
           }
