@@ -43,34 +43,35 @@ const Scanout = () => {
   const handleKeyPress = async (e) => {
     if (e.key === 'Enter') {
       const refId = inputValue.trim();
+      setInputValue(''); // Clear the input value immediately
       if (refId !== '') {
         setLoading(true);
         setError(null);
         setAttendeeData(null);
-
+  
         try {
-          const response = await axios.get(
-            `https://api.airtable.com/v0/appo4h23QGedx6uR0/Attendee?filterByFormula=({REF ID} = '${refId}')`,
-            {
-              headers: {
-                Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
-              },
-            }
-          );
-
-          if (response.data.records.length > 0) {
-            const attendee = response.data.records[0];
-            setAttendeeData(attendee.fields);
-
-            // Increase available seats in the "ROOM count" table for the "MAIN" room
-            const roomResponse = await axios.get(
+          const [attendeeResponse, roomResponse] = await Promise.all([
+            axios.get(
+              `https://api.airtable.com/v0/appo4h23QGedx6uR0/Attendee?filterByFormula=({REF ID} = '${refId}')`,
+              {
+                headers: {
+                  Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
+                },
+              }
+            ),
+            axios.get(
               'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count?filterByFormula=({Room Name} = "MAIN")',
               {
                 headers: {
                   Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
                 },
               }
-            );
+            ),
+          ]);
+  
+          if (attendeeResponse.data.records.length > 0) {
+            const attendee = attendeeResponse.data.records[0];
+            setAttendeeData(attendee.fields);
   
             if (roomResponse.data.records.length > 0) {
               const room = roomResponse.data.records[0];
@@ -96,19 +97,18 @@ const Scanout = () => {
                 setError('The room is already at maximum capacity.');
               }
             }
-
+  
             // Send data to MainRoomStatus table
             await sendDataToMainRoomStatus(refId, 'ScanOut');
           } else {
             setError('No attendee found with the provided REF ID.');
           }
         } catch (error) {
-          console.error('Error fetching attendee data:', error);
-          setError('An error occurred while fetching the attendee data.');
+          console.error('Error fetching data:', error);
+          setError('An error occurred while fetching the data.');
         }
-
+  
         setLoading(false);
-        setInputValue('');
       }
     }
   };

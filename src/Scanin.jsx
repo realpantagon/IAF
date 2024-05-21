@@ -43,73 +43,74 @@ const Scanin = () => {
   const handleKeyPress = async (e) => {
     if (e.key === 'Enter') {
       const refId = inputValue.trim();
+      setInputValue(''); // Clear the input value immediately
       if (refId !== '') {
         setLoading(true);
         setError(null);
         setAttendeeData(null);
-
+  
         try {
-          const response = await axios.get(
-            `https://api.airtable.com/v0/appo4h23QGedx6uR0/Attendee?filterByFormula=({REF ID} = '${refId}')`,
-            {
-              headers: {
-                Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
-              },
-            }
-          );
-          console.log('Response data:', response.data);
-
-          if (response.data.records.length > 0) {
-          const attendee = response.data.records[0];
-          setAttendeeData(attendee.fields);
-
-          // Decrease available seats in the "ROOM count" table for the "MAIN" room
-          const roomResponse = await axios.get(
-            'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count?filterByFormula=({Room Name} = "MAIN")',
-            {
-              headers: {
-                Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
-              },
-            }
-          );
-
-          if (roomResponse.data.records.length > 0) {
-            const room = roomResponse.data.records[0];
-            const availableSeats = room.fields['Available Seat'];
-            const maxSeats = room.fields['Max Seat'];
-
-            if (availableSeats > 0 && availableSeats <= maxSeats) {
-              await axios.patch(
-                `https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count/${room.id}`,
-                {
-                  fields: {
-                    'Available Seat': availableSeats - 1,
-                  },
+          const [attendeeResponse, roomResponse] = await Promise.all([
+            axios.get(
+              `https://api.airtable.com/v0/appo4h23QGedx6uR0/Attendee?filterByFormula=({REF ID} = '${refId}')`,
+              {
+                headers: {
+                  Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
                 },
-                {
-                  headers: {
-                    Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
-                    'Content-Type': 'application/json',
+              }
+            ),
+            axios.get(
+              'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count?filterByFormula=({Room Name} = "MAIN")',
+              {
+                headers: {
+                  Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
+                },
+              }
+            ),
+          ]);
+  
+          console.log('Response data:', attendeeResponse.data);
+  
+          if (attendeeResponse.data.records.length > 0) {
+            const attendee = attendeeResponse.data.records[0];
+            setAttendeeData(attendee.fields);
+  
+            if (roomResponse.data.records.length > 0) {
+              const room = roomResponse.data.records[0];
+              const availableSeats = room.fields['Available Seat'];
+              const maxSeats = room.fields['Max Seat'];
+  
+              if (availableSeats > 0 && availableSeats <= maxSeats) {
+                await axios.patch(
+                  `https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count/${room.id}`,
+                  {
+                    fields: {
+                      'Available Seat': availableSeats - 1,
+                    },
                   },
-                }
-              );
-            } else if (availableSeats <= 0) {
-              setError('No available seats in the room.');
+                  {
+                    headers: {
+                      Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
+                      'Content-Type': 'application/json',
+                    },
+                  }
+                );
+              } else if (availableSeats <= 0) {
+                setError('No available seats in the room.');
+              }
             }
-          }
-
+  
             // Send data to MainRoomStatus table
             await sendDataToMainRoomStatus(refId, 'ScanIn');
           } else {
             setError('No attendee found with the provided REF ID.');
           }
         } catch (error) {
-          console.error('Error fetching attendee data:', error);
-          setError('An error occurred while fetching the attendee data.');
+          console.error('Error fetching data:', error);
+          setError('An error occurred while fetching the data.');
         }
-
+  
         setLoading(false);
-        setInputValue('');
       }
     }
   };
