@@ -52,7 +52,7 @@ const Scanout = () => {
         try {
           const [attendeeResponse, roomResponse] = await Promise.all([
             axios.get(
-              `https://api.airtable.com/v0/appo4h23QGedx6uR0/Attendee?filterByFormula=({REF ID} = '${refId}')`,
+              `https://api.airtable.com/v0/appo4h23QGedx6uR0/Main%20base%E2%AD%90%EF%B8%8F?filterByFormula=({REF ID} = '${refId}')`,
               {
                 headers: {
                   Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
@@ -138,13 +138,13 @@ const Scanout = () => {
         {attendeeData && (
           <div className="mt-6 text-2xl text-center text-gray-800">
             <p>
-              <strong>Name:</strong> {attendeeData.Name}
+              <strong>Name:</strong> {attendeeData.Fname} {attendeeData.Lname}
             </p>
             <p>
-              <strong>REF ID:</strong> {attendeeData['REF ID']}
+              <strong>Badge:</strong> {attendeeData.Badge}
             </p>
             <p>
-              <strong>Email:</strong> {attendeeData.email}
+              <strong>Organization:</strong> {attendeeData.Organization}
             </p>
           </div>
         )}
