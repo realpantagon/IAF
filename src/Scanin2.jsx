@@ -117,7 +117,7 @@ const Scanin2 = () => {
 
   return (
     <div className="min-h-screen bg-image flex flex-col items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
+      <div className="bg-white p-12 my-8 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
         <h1 className="text-5xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-blue-800">
           Scan In PITCHER
         </h1>
