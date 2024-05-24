@@ -16,7 +16,7 @@ const Scanout2 = () => {
   const sendDataToPitchingRoomStatus = async (refId, status) => {
     try {
       const response = await axios.post(
-        'https://api.airtable.com/v0/appo4h23QGedx6uR0/PitchingRoomstatus',
+        "https://api.airtable.com/v0/appo4h23QGedx6uR0/PitchingRoomstatus",
         {
           records: [
             {
@@ -29,103 +29,113 @@ const Scanout2 = () => {
         },
         {
           headers: {
-            Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
-            'Content-Type': 'application/json',
+            Authorization:
+              "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
+            "Content-Type": "application/json",
           },
         }
       );
-      console.log('Data sent to PitchingRoomstatus:', response.data);
+      console.log("Data sent to PitchingRoomstatus:", response.data);
     } catch (error) {
-      console.error('Error sending data to PitchingRoomstatus:', error);
+      console.error("Error sending data to PitchingRoomstatus:", error);
     }
   };
 
   const handleKeyPress = async (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       const refId = inputValue.trim();
-      setInputValue(''); // Clear the input value immediately
-      if (refId !== '') {
+      setInputValue(""); // Clear the input value immediately
+      if (refId !== "") {
         setLoading(true);
         setError(null);
         setAttendeeData(null);
-  
+        console.log(refId);
+
         try {
-          const [attendeeResponse, roomResponse, pitchingRoomStatusResponse] = await Promise.all([
-            axios.get(
-              `https://api.airtable.com/v0/appo4h23QGedx6uR0/Main%20base%E2%AD%90%EF%B8%8F?filterByFormula=({REF ID} = '${refId}')`,
-              {
-                headers: {
-                  Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
-                },
-              }
-            ),
-            axios.get(
-              'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count?filterByFormula=({Room Name} = "PITCHING")',
-              {
-                headers: {
-                  Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
-                },
-              }
-            ),
-            axios.post(
-              'https://api.airtable.com/v0/appo4h23QGedx6uR0/PitchingRoomstatus',
-              {
-                records: [
-                  {
-                    fields: {
-                      ID: refId,
-                      Status: 'ScanOut',
-                    },
+          const [attendeeResponse, roomResponse, pitchingRoomStatusResponse] =
+            await Promise.all([
+              axios.get(
+                `https://api.airtable.com/v0/appo4h23QGedx6uR0/Data%20Import%2022%20May?filterByFormula={Ref.%20ID}='${refId}'`,
+                {
+                  headers: {
+                    Authorization:
+                      "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
                   },
-                ],
-              },
-              {
-                headers: {
-                  Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
-                  'Content-Type': 'application/json',
+                }
+              ),
+              axios.get(
+                'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count?filterByFormula=({Room Name} = "PITCHING")',
+                {
+                  headers: {
+                    Authorization:
+                      "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
+                  },
+                }
+              ),
+              axios.post(
+                "https://api.airtable.com/v0/appo4h23QGedx6uR0/PitchingRoomstatus",
+                {
+                  records: [
+                    {
+                      fields: {
+                        ID: refId,
+                        Status: "ScanOut",
+                      },
+                    },
+                  ],
                 },
-              }
-            ),
-          ]);
-  
+                {
+                  headers: {
+                    Authorization:
+                      "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
+                    "Content-Type": "application/json",
+                  },
+                }
+              ),
+            ]);
+
           if (attendeeResponse.data.records.length > 0) {
             const attendee = attendeeResponse.data.records[0];
             setAttendeeData(attendee.fields);
-  
+
             if (roomResponse.data.records.length > 0) {
               const room = roomResponse.data.records[0];
-              const availableSeats = room.fields['Available Seat'];
-              const maxSeats = room.fields['Max Seat'];
-  
+              const availableSeats = room.fields["Available Seat"];
+              const maxSeats = room.fields["Max Seat"];
+
               if (availableSeats < maxSeats) {
                 await axios.patch(
                   `https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count/${room.id}`,
                   {
                     fields: {
-                      'Available Seat': availableSeats + 1,
+                      "Available Seat": availableSeats + 1,
                     },
                   },
                   {
                     headers: {
-                      Authorization: 'Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa',
-                      'Content-Type': 'application/json',
+                      Authorization:
+                        "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
+                      "Content-Type": "application/json",
                     },
                   }
                 );
               } else if (availableSeats === maxSeats) {
-                setError('The room is already at maximum capacity.');
+                setError("The room is already at maximum capacity.");
               }
             }
-  
-            console.log('Data sent to PitchingRoomstatus:', pitchingRoomStatusResponse.data);
+
+            console.log(
+              "Data sent to PitchingRoomstatus:",
+              pitchingRoomStatusResponse.data
+            );
           } else {
-            setError('No attendee found with the provided REF ID.');
+            setError("No attendee found with the provided REF ID.");
           }
         } catch (error) {
-          console.error('Error fetching data:', error);
-          setError('An error occurred while fetching the data.');
+          console.error("Error fetching data:", error);
+          setError("An error occurred while fetching the data.");
         }
-  
+
         setLoading(false);
       }
     }
@@ -156,7 +166,8 @@ const Scanout2 = () => {
         {attendeeData && (
           <div className="mt-6 text-2xl text-center text-gray-800">
             <p>
-              <strong>Name:</strong> {attendeeData.Fname} {attendeeData.Lname}
+              <strong>Name:</strong> {attendeeData.Firstname}{" "}
+              {attendeeData.Surname}
             </p>
             <p>
               <strong>Badge:</strong> {attendeeData.Badge}

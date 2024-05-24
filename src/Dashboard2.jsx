@@ -55,7 +55,7 @@ const Dashboard2 = () => {
   return (
     <div className="min-h-screen bg-image">
       <div className="container mx-auto py-8 relative">
-        <h1 className="text-7xl font-extrabold mb-8 mt-72 text-center animate-text bg-gradient-to-r from-red-700 to-amber-400 bg-clip-text text-transparent drop-shadow-lg">
+      <h1 className="text-7xl font-bold mb-8 mt-72 text-center text-green-900 drop-shadow-lg">
           {roomName} ROOM
         </h1>
         <a href='/'>
