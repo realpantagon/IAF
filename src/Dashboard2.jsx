@@ -9,6 +9,8 @@ const Dashboard2 = () => {
   const [availableSeats, setAvailableSeats] = useState(0);
   const [maxSeats, setMaxSeats] = useState(0);
   const [roomName, setRoomName] = useState('');
+  const [scanInCount, setScanInCount] = useState(0);
+  const [scanOutCount, setScanOutCount] = useState(0);
 
   useEffect(() => {
     const fetchSeats = async () => {
@@ -24,9 +26,7 @@ const Dashboard2 = () => {
         const records = response.data.records;
         const selectedRoom = records.find((record) => record.fields['Room Name'] === 'PITCHING');
         console.log(selectedRoom);
-
         if (selectedRoom) {
-          setAvailableSeats(selectedRoom.fields['Available Seat']);
           setMaxSeats(selectedRoom.fields['Max Seat']);
           setRoomName(selectedRoom.fields['Room Name']);
         }
@@ -35,14 +35,59 @@ const Dashboard2 = () => {
       }
     };
 
-    fetchSeats(); // Initial fetch
+    const fetchScanInRecords = async () => {
+      try {
+        const response = await axios.get(
+          'https://api.airtable.com/v0/appo4h23QGedx6uR0/MainRoomStatus?view=ScanIn',
+          {
+            headers: {
+              Authorization: 'Bearer pat9aDF4Eh2hSEl8g.442a2a6963b0964593b0e1f8f0469049b275073158fc366e1187ff184f1beb7c',
+            },
+          }
+        );
+        const records = response.data.records;
+        setScanInCount(records.length);
+      } catch (error) {
+        console.error('Error fetching ScanIn records from Airtable:', error);
+      }
+    };
 
-    const interval = setInterval(fetchSeats, 1000); // Fetch every second
+    const fetchScanOutRecords = async () => {
+      try {
+        const response = await axios.get(
+          'https://api.airtable.com/v0/appo4h23QGedx6uR0/MainRoomStatus?view=ScanOut',
+          {
+            headers: {
+              Authorization: 'Bearer pat9aDF4Eh2hSEl8g.442a2a6963b0964593b0e1f8f0469049b275073158fc366e1187ff184f1beb7c',
+            },
+          }
+        );
+        const records = response.data.records;
+        setScanOutCount(records.length);
+      } catch (error) {
+        console.error('Error fetching ScanOut records from Airtable:', error);
+      }
+    };
+
+    fetchSeats(); // Initial fetch
+    fetchScanInRecords(); // Initial fetch of ScanIn records
+    fetchScanOutRecords(); // Initial fetch of ScanOut records
+
+    const interval = setInterval(() => {
+      fetchSeats();
+      fetchScanInRecords();
+      fetchScanOutRecords();
+    }, 1000); // Fetch every second
 
     return () => {
       clearInterval(interval); // Clean up the interval on component unmount
     };
   }, []);
+
+  const calculateAvailableSeats = () => {
+    const seatsOccupied = scanInCount - scanOutCount;
+    return maxSeats - seatsOccupied;
+  };
 
   const handleScanInClick = () => {
     navigate('/scaninpitch');
@@ -55,13 +100,13 @@ const Dashboard2 = () => {
   return (
     <div className="min-h-screen bg-image">
       <div className="container mx-auto py-8 relative">
-      <h1 className="text-7xl font-bold mb-8 mt-72 text-center text-green-900 drop-shadow-lg">
+        <h1 className="text-7xl font-bold mb-8 mt-72 text-center text-green-900 drop-shadow-lg">
           {roomName} ROOM
         </h1>
-        <a href='/'>
-        <p className="number-style text-9xl mb-12 text-center text-transparent bg-clip-text bg-green-800">
-          {availableSeats}
-        </p>
+        <a href="/">
+          <p className="number-style text-9xl mb-12 text-center text-transparent bg-clip-text bg-green-800">
+            {calculateAvailableSeats()}
+          </p>
         </a>
         <h1 className="text-6xl font-bold mb-8 text-center text-green-900 drop-shadow-lg">
           Available Seats
