@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
 
-const Scanin = () => {
+const Scanin1 = () => {
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -52,84 +52,21 @@ const Scanin = () => {
         console.log(refId);
 
         try {
-          const [attendeeResponse, roomResponse, mainRoomStatusResponse] =
-            await Promise.all([
-              axios.get(
-                `https://api.airtable.com/v0/appo4h23QGedx6uR0/Data%20Import%2022%20May?filterByFormula={Ref.%20ID}='${refId}'`,
-                {
-                  headers: {
-                    Authorization:
-                      "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
-                  },
-                }
-              ),
-              axios.get(
-                'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count?filterByFormula=({Room Name} = "MAIN")',
-                {
-                  headers: {
-                    Authorization:
-                      "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
-                  },
-                }
-              ),
-              axios.post(
-                "https://api.airtable.com/v0/appo4h23QGedx6uR0/MainRoomStatus",
-                {
-                  records: [
-                    {
-                      fields: {
-                        ID: refId,
-                        Status: "ScanIn",
-                      },
-                    },
-                  ],
-                },
-                {
-                  headers: {
-                    Authorization:
-                      "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
-                    "Content-Type": "application/json",
-                  },
-                }
-              ),
-            ]);
-
-          console.log("Response data:", attendeeResponse.data);
+          const attendeeResponse = await axios.get(
+            `https://api.airtable.com/v0/appo4h23QGedx6uR0/Data%20Import%2022%20May?filterByFormula={Ref.%20ID}='${refId}'`,
+            {
+              headers: {
+                Authorization:
+                  "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
+              },
+            }
+          );
 
           if (attendeeResponse.data.records.length > 0) {
             const attendee = attendeeResponse.data.records[0];
             setAttendeeData(attendee.fields);
 
-            if (roomResponse.data.records.length > 0) {
-              const room = roomResponse.data.records[0];
-              const availableSeats = room.fields["Available Seat"];
-              const maxSeats = room.fields["Max Seat"];
-
-              if (availableSeats > 0 && availableSeats <= maxSeats) {
-                await axios.patch(
-                  `https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count/${room.id}`,
-                  {
-                    fields: {
-                      "Available Seat": availableSeats - 1,
-                    },
-                  },
-                  {
-                    headers: {
-                      Authorization:
-                        "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
-                      "Content-Type": "application/json",
-                    },
-                  }
-                );
-              } else if (availableSeats <= 0) {
-                setError("No available seats in the room.");
-              }
-            }
-
-            console.log(
-              "Data sent to MainRoomStatus:",
-              mainRoomStatusResponse.data
-            );
+            await sendDataToMainRoomStatus(refId, "ScanIn");
           } else {
             setError("No attendee found with the provided REF ID.");
           }
@@ -147,7 +84,7 @@ const Scanin = () => {
     <div className="min-h-screen bg-image flex flex-col items-center justify-center">
       <div className="bg-white p-12 my-8 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
         <h1 className="text-5xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-blue-800">
-          Scan In MAIN
+          Scan In Main
         </h1>
         <input
           type="text"
@@ -192,4 +129,4 @@ const Scanin = () => {
   );
 };
 
-export default Scanin;
+export default Scanin1;
