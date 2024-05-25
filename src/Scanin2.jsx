@@ -52,84 +52,21 @@ const Scanin2 = () => {
         console.log(refId);
 
         try {
-          const [attendeeResponse, roomResponse, pitchingRoomStatusResponse] =
-            await Promise.all([
-              axios.get(
-                `https://api.airtable.com/v0/appo4h23QGedx6uR0/Data%20Import%2022%20May?filterByFormula={Ref.%20ID}='${refId}'`,
-                {
-                  headers: {
-                    Authorization:
-                      "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
-                  },
-                }
-              ),
-              axios.get(
-                'https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count?filterByFormula=({Room Name} = "PITCHING")',
-                {
-                  headers: {
-                    Authorization:
-                      "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
-                  },
-                }
-              ),
-              axios.post(
-                "https://api.airtable.com/v0/appo4h23QGedx6uR0/PitchingRoomStatus",
-                {
-                  records: [
-                    {
-                      fields: {
-                        ID: refId,
-                        Status: "ScanIn",
-                      },
-                    },
-                  ],
-                },
-                {
-                  headers: {
-                    Authorization:
-                      "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
-                    "Content-Type": "application/json",
-                  },
-                }
-              ),
-            ]);
-
-          console.log("Response data:", attendeeResponse.data);
+          const attendeeResponse = await axios.get(
+            `https://api.airtable.com/v0/appo4h23QGedx6uR0/Data%20Import%2022%20May?filterByFormula={Ref.%20ID}='${refId}'`,
+            {
+              headers: {
+                Authorization:
+                  "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
+              },
+            }
+          );
 
           if (attendeeResponse.data.records.length > 0) {
             const attendee = attendeeResponse.data.records[0];
             setAttendeeData(attendee.fields);
 
-            if (roomResponse.data.records.length > 0) {
-              const room = roomResponse.data.records[0];
-              const availableSeats = room.fields["Available Seat"];
-              const maxSeats = room.fields["Max Seat"];
-
-              if (availableSeats > 0 && availableSeats <= maxSeats) {
-                await axios.patch(
-                  `https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count/${room.id}`,
-                  {
-                    fields: {
-                      "Available Seat": availableSeats - 1,
-                    },
-                  },
-                  {
-                    headers: {
-                      Authorization:
-                        "Bearer patOd4nGMnuuS7uDe.f20d2a65a590973e273ca7f67ae13640a37ac53245f40c3c50d14f9a43f3b8fa",
-                      "Content-Type": "application/json",
-                    },
-                  }
-                );
-              } else if (availableSeats <= 0) {
-                setError("No available seats in the room.");
-              }
-            }
-
-            console.log(
-              "Data sent to PitchingRoomStatus:",
-              pitchingRoomStatusResponse.data
-            );
+            await sendDataToPitchingRoomStatus(refId, "ScanIn");
           } else {
             setError("No attendee found with the provided REF ID.");
           }
