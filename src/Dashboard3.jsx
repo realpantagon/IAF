@@ -60,13 +60,16 @@ const Dashboard3 = () => {
             }
           ),
         ]);
-
+    
         const scanInCount = scanInResponse.data.records.length;
         const scanOutCount = scanOutResponse.data.records.length;
-
+    
         const calculatedAvailableSeats = maxSeats - scanInCount + scanOutCount;
         setAvailableSeats(calculatedAvailableSeats);
-
+    
+        // console.log("Room ID:", roomId);
+        console.log("Available Seats:", calculatedAvailableSeats);
+    
         // Update available seats in the pitching room
         await axios.patch(
           `https://api.airtable.com/v0/appo4h23QGedx6uR0/ROOM%20count/${roomId}`,
@@ -85,6 +88,7 @@ const Dashboard3 = () => {
         );
       } catch (error) {
         console.error("Error fetching seat counts from Airtable:", error);
+        console.error("Error details:", error.response?.data);
       }
     };
 
