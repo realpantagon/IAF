@@ -53,7 +53,7 @@ const Scanout3 = () => {
 
         try {
           const attendeeResponse = await axios.get(
-            `https://api.airtable.com/v0/appo4h23QGedx6uR0/Data%20Import%2022%20May?filterByFormula={Ref.%20ID}='${refId}'`,
+            `https://api.airtable.com/v0/appo4h23QGedx6uR0/Data%20Import%2022%20May%E2%AD%90%EF%B8%8F?filterByFormula={Ref.%20ID}='${refId}'`,
             {
               headers: {
                 Authorization:
